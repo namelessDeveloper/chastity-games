@@ -5,6 +5,7 @@ const Settings = () => {
 
   const handleReset = () => {
     localStorage.clear()
+    window.location.reload();
     console.log('Game saves cleared');
   }
 

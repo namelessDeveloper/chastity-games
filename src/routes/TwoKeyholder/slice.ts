@@ -1,18 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DateTime } from "luxon";
 import { coinToString, flipCoin } from "utils/coins";
 
+export enum Mode {
+  preview = 'preview',
+  real = 'real',
+}
+
 type TwoKeyholdersGameState = {
-  isPreview: boolean;
   sentence: number;
+  mode: Mode;
   nextTurn?: number;
   flavorText?: string;
 }
 
 const initialState: TwoKeyholdersGameState = {
-  isPreview: false,
+  mode: Mode.preview,
   sentence: 3,
-  flavorText: undefined,
 }
 
 function getOutcomeText(sum: number) {
@@ -23,7 +27,25 @@ function getOutcomeText(sum: number) {
   }
 }
 
-const TURN_DELAY = process.env.NODE_ENV === 'development' ? 60 : 60*60*24;
+function getExtension(sum: number) {
+  switch (sum) {
+    case 0: return -1
+    case 1: return 1
+    case 2: return 3
+    // Unreachable
+    default: return 0;
+  }
+}
+
+function getModeDelay(mode: Mode) {
+  switch (mode) {
+    case Mode.preview:
+      return 0
+    default:
+    case Mode.real:
+      return 60*60*24
+  }
+}
 
 const twoKeyholderSlice = createSlice({
   name: 'TwoKeyholders',
@@ -32,15 +54,19 @@ const twoKeyholderSlice = createSlice({
     flip(state) {
       const flips = [flipCoin(), flipCoin()];
       const sum = flips.reduce((a, b) => a + b)
-      // if 0 -> 0, if 1 -> 1, if 2 -> 3
-      const extension = sum === 2 ? 3 : sum
-
-      state.sentence += extension
+      state.sentence += getExtension(sum)
       state.flavorText = `Emily rolled a ${coinToString(flips[0])} and I rolled a ${coinToString(flips[1])}.\n${getOutcomeText(sum)}`
-      state.nextTurn = Math.floor(DateTime.now().plus({ seconds: TURN_DELAY }).toSeconds())
+      state.nextTurn = Math.floor(DateTime.now().plus({ seconds: getModeDelay(state.mode) }).toSeconds())
+    },
+    setMode(state, action: PayloadAction<Mode>) {
+      state.mode = action.payload
+    },
+    restart(state) {
+      if (state.mode === Mode.preview || state.sentence === 0)
+      return initialState
     }
   }
 })
 
 export default twoKeyholderSlice.reducer
-export const {flip} = twoKeyholderSlice.actions
+export const {flip, setMode, restart} = twoKeyholderSlice.actions

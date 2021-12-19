@@ -8,7 +8,7 @@ import { Main, Hero, Speech } from "styles/layout";
 
 import STRINGS from 'strings.json'
 import image from 'assets/two-kh.jpeg'
-import { flip } from "./slice";
+import { flip, Mode, restart, setMode } from "./slice";
 import Countdown from "components/Countdown";
 
 
@@ -31,7 +31,7 @@ const TwoKeyholders = () => {
   const handleStart = () => {
     const isSure = window.confirm(STRINGS.DISABLE_PREVIEW)
     if (isSure) {
-      //TODO preview mode
+      dispatch(setMode(Mode.real))
     }
   }
 
@@ -41,20 +41,30 @@ const TwoKeyholders = () => {
     dispatch(flip())
   }
 
+  const handleReset = () => {
+    dispatch(restart())
+  }
+
   return (
     <Main>
       <Hero src={image}/>
       <Status>Sentence: {state.sentence} <Countdown timeLeft={countDown}/></Status>
-      {state.isPreview && (
+      {state.mode === "preview" && (
         <button onClick={handleStart}>Disable Preview Mode</button>
       )}
-      <button onClick={handleFlip} disabled={!canFlip}>Flip Coins</button>
-
+      <div style={{ display: 'flex' }}>
+        <button onClick={handleFlip} disabled={!canFlip}>Flip Coins</button>
+        {(state.mode === Mode.preview || state.sentence === 0) && (
+          <button onClick={handleReset}>Reset</button>
+        )}
+      </div>
       {state.flavorText && (
         <Speech>
           {state.flavorText}
         </Speech>
       )}
+
+
     </Main>
   )
 }
