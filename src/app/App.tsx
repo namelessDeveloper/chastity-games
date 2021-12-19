@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 
 const App: React.FC<any> = () => (
   <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter basename="/chastity-games">
       <GlobalStyles/>
       <Routes/>
     </BrowserRouter>
