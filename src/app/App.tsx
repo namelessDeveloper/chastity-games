@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 
 import Routes from '../routes';
 import GlobalStyles from './styles';
@@ -10,10 +10,10 @@ import { Provider } from 'react-redux';
 
 const App: React.FC<any> = () => (
   <Provider store={store}>
-    <BrowserRouter basename="/chastity-games">
+    <HashRouter>
       <GlobalStyles/>
       <Routes/>
-    </BrowserRouter>
+    </HashRouter>
   </Provider>
 );
 
