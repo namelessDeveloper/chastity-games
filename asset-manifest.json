@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.js": "/static/js/main.cfb4d7dc.js",
+    "static/media/two-kh.jpeg": "/static/media/two-kh.674f7bdc2e446a83a2c9.jpeg",
+    "index.html": "/index.html",
+    "main.cfb4d7dc.js.map": "/static/js/main.cfb4d7dc.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.cfb4d7dc.js"
+  ]
+}
