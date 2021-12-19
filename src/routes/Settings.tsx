@@ -1,7 +1,7 @@
 import React from 'react'
 import { Main } from 'styles/layout';
 
-const Settings = ({}) => {
+const Settings = () => {
 
   const handleReset = () => {
     localStorage.clear()
