@@ -1,11 +1,12 @@
 {
   "files": {
-    "main.js": "/chastity-games/static/js/main.0b655765.js",
+    "main.js": "/chastity-games/static/js/main.b7974846.js",
+    "static/media/ditz.png": "/chastity-games/static/media/ditz.46110f08a1d10082972e.png",
     "static/media/two-kh.jpeg": "/chastity-games/static/media/two-kh.674f7bdc2e446a83a2c9.jpeg",
     "index.html": "/chastity-games/index.html",
-    "main.0b655765.js.map": "/chastity-games/static/js/main.0b655765.js.map"
+    "main.b7974846.js.map": "/chastity-games/static/js/main.b7974846.js.map"
   },
   "entrypoints": [
-    "static/js/main.0b655765.js"
+    "static/js/main.b7974846.js"
   ]
 }
