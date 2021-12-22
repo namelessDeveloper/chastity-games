@@ -1,34 +1,28 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { DateTime } from "luxon";
-import { coinToString, flipCoin } from "utils/coins";
-
-export enum Mode {
-  preview = 'preview',
-  real = 'real',
-}
+import { Mode } from "types";
+import { coinToString, flipCoin } from "utils/rollDice";
+import { sum } from "utils/math";
+import { modeOptions } from "utils/modes";
 
 type TwoKeyholdersGameState = {
   sentence: number;
   mode: Mode;
-  nextTurn?: number;
+  nextTurn: number;
   flavorText?: string;
+  gameOver?: boolean;
+  count: number;
 }
 
 const initialState: TwoKeyholdersGameState = {
   mode: Mode.preview,
   sentence: 3,
+  nextTurn: 0,
+  count: 0,
 }
 
-function getOutcomeText(sum: number) {
-  switch(sum) {
-    case 0: return "One day less in the cage."
-    case 1: return "Another day in the cage."
-    case 2: return "Ouch! Looks like another 3 in the cage."
-  }
-}
-
-function getExtension(sum: number) {
-  switch (sum) {
+function getExtension(flips: number[]) {
+  switch (sum(flips)) {
     case 0: return -1
     case 1: return 1
     case 2: return 3
@@ -37,14 +31,18 @@ function getExtension(sum: number) {
   }
 }
 
-function getModeDelay(mode: Mode) {
-  switch (mode) {
-    case Mode.preview:
-      return 0
+function getFlavorText(flips: number[]) {
+  const girl1 = coinToString(flips[0]);
+  const girl2 = coinToString(flips[1]);
+  let outcome
+  switch(sum(flips)) {
+    case 2: outcome = "Ouch! Looks like another 3 in the cage."; break;
+    case 1: outcome = "Another day in the cage."; break;
+    case 0:
     default:
-    case Mode.real:
-      return 60*60*24
+      outcome = "One day less in the cage."; break;
   }
+  return `Emily rolled a ${girl1} and I rolled a ${girl2}.\n${outcome}`
 }
 
 const twoKeyholderSlice = createSlice({
@@ -52,13 +50,19 @@ const twoKeyholderSlice = createSlice({
   initialState,
   reducers: {
     flip(state) {
-      const flips = [flipCoin(), flipCoin()];
-      const sum = flips.reduce((a, b) => a + b)
-      state.sentence += getExtension(sum)
-      state.flavorText = `Emily rolled a ${coinToString(flips[0])} and I rolled a ${coinToString(flips[1])}.\n${getOutcomeText(sum)}`
-      state.nextTurn = Math.floor(DateTime.now().plus({ seconds: getModeDelay(state.mode) }).toSeconds())
+      if (!state.gameOver) {
+        const flips = [flipCoin(), flipCoin()];
+        state.sentence += getExtension(flips)
+        state.flavorText = getFlavorText(flips)
+        state.nextTurn = Math.floor(DateTime.now().plus({ seconds: modeOptions(state.mode).duration }).toSeconds())
+        if(state.sentence === 0) {
+          state.flavorText += 'Time to get you unlocked!'
+          state.gameOver = true
+        }
+        state.count += 1
+      }
     },
-    setMode(state, action: PayloadAction<Mode>) {
+    setMode(state, action) {
       state.mode = action.payload
     },
     restart(state) {

@@ -1,8 +1,10 @@
 import styled from "styled-components";
 
+export const NAVIGATION_HEIGHT = 70
+
 export const Container = styled.div`
   width: 100%;
-  height: 70px;
+  height: ${NAVIGATION_HEIGHT}px;
   background: blueviolet;
   display: flex;
   align-items: center;

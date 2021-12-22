@@ -16,6 +16,7 @@ const GlobalStyles = createGlobalStyle`
     border: none;
     border-radius: .3em;
     padding: .5em;
+    margin: .2em;
     color: black;
     cursor: pointer;
     &:hover {
