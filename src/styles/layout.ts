@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components'
 
 export const Hero = styled.img`
@@ -5,8 +6,14 @@ export const Hero = styled.img`
 `;
 
 export const Main = styled.main`
-
+  height: 100%;
+  position: relative;
 `;
+
+export const Credit = styled.div`
+  position: absolute;
+  bottom: 0;
+`
 
 
 export const Speech = styled.div`
@@ -27,4 +34,8 @@ export const Flex = styled.div<FlexProps>`
     justify-content: center;
     align-items: center;
   `}
+`
+
+export const StyledNavLink = styled(NavLink)`
+  margin-bottom: .4em;
 `

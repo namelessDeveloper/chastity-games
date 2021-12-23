@@ -1,19 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
 import React from 'react'
+import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import { NavLink, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Navigation from '../components/Navigation';
-import { Flex } from '../styles/layout';
+import { Flex, StyledNavLink } from '../styles/layout';
 import Settings from './Settings';
 
-import TwoKeyholders from './TwoKeyholder';
-import TheDitz from './TheDitz';
-
-import twoKeyholdersReducer from './TwoKeyholder/slice'
-import ditzReducer from './TheDitz/slice'
+import TwoKeyholders, { reducer as khReducer } from './TwoKeyholder';
+import TheDitz, { reducer as ditzReducer } from './TheDitz';
 import Layout from 'components/Layout';
-import styled from 'styled-components';
 
+// Routing
 
 export const APP = {
   HOME: '/',
@@ -23,10 +20,6 @@ export const APP = {
   },
   SETTINGS: '/settings'
 }
-
-const StyledNavLink = styled(NavLink)`
-  margin-bottom: .4em;
-`
 
 const Routes = () => (
   <Layout Navigation={Navigation}>
@@ -44,9 +37,11 @@ const Routes = () => (
 
 export default Routes;
 
+// Store
+
 export const store = configureStore({
   reducer: {
-    twoKeyholders: twoKeyholdersReducer,
+    twoKeyholders: khReducer,
     ditz: ditzReducer,
   },
   //@ts-ignore
