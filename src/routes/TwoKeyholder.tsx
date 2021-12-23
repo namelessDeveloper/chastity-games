@@ -1,7 +1,7 @@
 import Status from "components/Status";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "routes";
-import { Main, Hero, Speech } from "styles/layout";
+import { Main, Hero, Speech, Credit } from "styles/layout";
 
 import STRINGS from 'strings.json'
 import image from 'assets/two-kh.jpeg'
@@ -14,6 +14,8 @@ import { ChastityGame, Mode } from "types";
 import { coinToString, flipCoin } from "utils/rollDice";
 import { sum } from "utils/math";
 import { modeOptions } from "utils/modes";
+
+//
 
 const initialState: ChastityGame = {
   mode: Mode.preview,
@@ -117,7 +119,9 @@ const TwoKeyholders = () => {
         </Speech>
       )}
 
-
+        <Credit>
+        Credit to <a href="https://www.reddit.com/user/Friedes_Evil_Twinsis/">u/Friedes_Evil_Twinsis</a> for the caption idea.
+        </Credit>
     </Main>
   )
 }

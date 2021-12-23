@@ -14,6 +14,8 @@ import { ChastityGame, Mode } from "types";
 import { Dice } from "utils/rollDice";
 import { modeOptions } from "utils/modes";
 
+// https://i.redd.it/krssxtuqjrm31.jpg
+
 const initialState: ChastityGame = {
   mode: Mode.preview,
   sentence: 14,
